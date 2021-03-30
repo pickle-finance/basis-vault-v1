@@ -62,15 +62,8 @@ abstract contract StrategyBasisFarmBase is StrategyStakingRewardsBase {
             );
             path[0] = bas;
             path[1] = dai;
+            path[2] = bac;
             _swapUniswapWithPath(path, _bas.sub(_keepBAS));
-        }
-
-        // Swap half DAI for token
-        uint256 _dai = IERC20(dai).balanceOf(address(this));
-        if (_dai > 0) {
-            path[0] = dai;
-            path[1] = token1;
-            _swapUniswapWithPath(path, _dai);
         }
 
         // We want to get back BAS LP tokens
