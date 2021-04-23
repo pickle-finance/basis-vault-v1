@@ -104,6 +104,9 @@ dist
 .tern-port
 /out
 
+build
+cache
+artifacts
 solc-input.json
 yarn.lock
 package-lock.json

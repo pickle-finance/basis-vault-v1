@@ -5,7 +5,7 @@ import "../strategy-basis-farm-base.sol";
 
 contract StrategyBasisBac is StrategyBasisFarmBase {
     // Token addresses
-    address public staking_pool = 0x7E7aE8923876955d6Dcb7285c04065A1B9d6ED8c; //needs to be updated
+    address public staking_pool = 0x190503cFbE97d77E83dedfC550C79EFd6E2E799f;
     address public bac = 0x3449FC1Cd036255BA1EB19d65fF4BA2b8903A69a;
 
     constructor(
@@ -24,7 +24,7 @@ contract StrategyBasisBac is StrategyBasisFarmBase {
             _controller,
             _timelock
         )
-    {}
+    { }
 
     // **** Views ****
 

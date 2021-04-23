@@ -2,6 +2,7 @@
 pragma solidity ^0.6.7;
 
 import "./strategy-staking-rewards-base.sol";
+import "hardhat/console.sol";
 
 abstract contract StrategyBasisFarmBase is StrategyStakingRewardsBase {
     // Token addresses
@@ -51,6 +52,8 @@ abstract contract StrategyBasisFarmBase is StrategyStakingRewardsBase {
     function harvest() public override onlyBenevolent {
         address[] memory path = new address[](2);
         // Collects BAS tokens
+        console.log("   [harvest] stake balance of strategy => ", IStakingRewards(rewards).balanceOf(address(this)));
+        console.log("   [harvest] getHarvestable => ", IStakingRewards(rewards).earned(address(this)));
         IStakingRewards(rewards).getReward();
         uint256 _bas = IERC20(bas).balanceOf(address(this));
         if (_bas > 0) {
@@ -62,7 +65,7 @@ abstract contract StrategyBasisFarmBase is StrategyStakingRewardsBase {
             );
             path[0] = bas;
             path[1] = dai;
-            path[2] = bac;
+            path[2] = token1;
             _swapUniswapWithPath(path, _bas.sub(_keepBAS));
         }
 
