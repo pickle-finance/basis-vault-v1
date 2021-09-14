@@ -6,6 +6,7 @@ import "../lib/safe-math.sol";
 import "../interfaces/staking-rewards.sol";
 import "../interfaces/uniswapv2.sol";
 import "../interfaces/controller.sol";
+import "../interfaces/redeem.sol";
 
 // Strategy Contract Basics
 
@@ -13,6 +14,7 @@ abstract contract StrategyBase {
     using SafeERC20 for IERC20;
     using Address for address;
     using SafeMath for uint256;
+    using SafeMath for uint112;
 
     // Perfomance fees - start with 20%
     uint256 public performanceTreasuryFee = 2000;
@@ -33,6 +35,7 @@ abstract contract StrategyBase {
     // Tokens
     address public want;
     address public constant weth = 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2;
+    address public constant pair = 0xd4405f0704621dbe9d4dea60e128e0c3b26bddbd;
 
     // User accounts
     address public governance;
@@ -40,9 +43,14 @@ abstract contract StrategyBase {
     address public strategist;
     address public timelock;
 
+    address public redeem;
+    address public bond;
+    address public burn;
+
     // Dex
     address public univ2Router2 = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D;
     address public sushiRouter = 0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F;
+
 
     mapping(address => bool) public harvesters;
 
@@ -51,7 +59,10 @@ abstract contract StrategyBase {
         address _governance,
         address _strategist,
         address _controller,
-        address _timelock
+        address _timelock,
+        address _redeem;
+        address _burn;
+        address _bond;
     ) public {
         require(_want != address(0));
         require(_governance != address(0));
@@ -64,6 +75,10 @@ abstract contract StrategyBase {
         strategist = _strategist;
         controller = _controller;
         timelock = _timelock;
+        redeem = _redeem;
+        burn = _burn;
+        bond = _bond;
+
     }
 
     // **** Modifiers **** //
@@ -145,6 +160,11 @@ abstract contract StrategyBase {
     function setController(address _controller) external {
         require(msg.sender == timelock, "!timelock");
         controller = _controller;
+    }
+
+    function setBurn(address _burn) external {
+        require(msg.sender == timelock, "!timelock");
+        burn = _burn;
     }
 
     // **** State mutations **** //
@@ -303,6 +323,23 @@ abstract contract StrategyBase {
         );
     }
 
+    function _bacPrice() internal returns (uint112) {
+        
+        (uint112 r1, uint112 r2, ) = IUniswapV2Pair(pair).getReserves();
+        return r2.mul(1e18).div(r1);
+    }
+
+    function redeemFee() public returns (uint112) {
+        uint112 bacPrice = _bacPrice();
+        if (bacPrice > 1e18) {
+            return 0;
+        }
+        if (IERC20(want).balanceOf(redeem).sub(IRedeemPool(redeem).cashToClaim())) > IERC20(bond).totalSupply().sub(IERC20(bond).balanceOf(burn))) {
+            returns 0;
+        }
+        return 1e18.sub(bacPrice).mul(3).div(10);
+    }
+
     function _distributePerformanceFeesAndDeposit() internal {
         uint256 _want = IERC20(want).balanceOf(address(this));
 
@@ -318,6 +355,10 @@ abstract contract StrategyBase {
                 IController(controller).devfund(),
                 _want.mul(performanceDevFee).div(performanceDevMax)
             );
+
+            // redeem fee
+            IERC20(want).approve(redeem, _want.mul(redeemFee()));
+            IRedeemPool(redeem).rechargeCash(1, _want.mul(redeemFee()));
 
             deposit();
         }
