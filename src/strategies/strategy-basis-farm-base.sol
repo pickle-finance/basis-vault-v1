@@ -22,7 +22,10 @@ abstract contract StrategyBasisFarmBase is StrategyStakingRewardsBase {
         address _governance,
         address _strategist,
         address _controller,
-        address _timelock
+        address _timelock,
+        address _redeem,
+        address _burn,
+        address _bond
     )
         public
         StrategyStakingRewardsBase(
@@ -31,7 +34,10 @@ abstract contract StrategyBasisFarmBase is StrategyStakingRewardsBase {
             _governance,
             _strategist,
             _controller,
-            _timelock
+            _timelock,
+            _redeem,
+            _burn,
+            _bond
         )
     {
         token1 = _token1;

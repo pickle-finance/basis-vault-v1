@@ -36,6 +36,9 @@ contract StrategyBasisBacTest is StrategyBasisFarmTestBase {
                     governance,
                     strategist,
                     address(controller),
+                    timelock,
+                    timelock,
+                    timelock,
                     timelock
                 )
             )

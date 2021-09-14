@@ -12,7 +12,10 @@ contract StrategyBasisBac is StrategyBasisFarmBase {
         address _governance,
         address _strategist,
         address _controller,
-        address _timelock
+        address _timelock,
+        address _redeem,
+        address _burn,
+        address _bond
     )
         public
         StrategyBasisFarmBase(
@@ -22,7 +25,10 @@ contract StrategyBasisBac is StrategyBasisFarmBase {
             _governance,
             _strategist,
             _controller,
-            _timelock
+            _timelock,
+            _redeem,
+            _burn,
+            _bond
         )
     { }
 

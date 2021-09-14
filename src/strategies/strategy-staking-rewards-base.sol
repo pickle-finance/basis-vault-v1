@@ -14,10 +14,13 @@ abstract contract StrategyStakingRewardsBase is StrategyBase {
         address _governance,
         address _strategist,
         address _controller,
-        address _timelock
+        address _timelock,
+        address _redeem,
+        address _burn,
+        address _bond
     )
         public
-        StrategyBase(_want, _governance, _strategist, _controller, _timelock)
+        StrategyBase(_want, _governance, _strategist, _controller, _timelock, _redeem, _burn, _bond)
     {
         rewards = _rewards;
     }
