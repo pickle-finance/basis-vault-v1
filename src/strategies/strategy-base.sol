@@ -356,8 +356,8 @@ abstract contract StrategyBase {
             );
 
             // redeem fee
-            IERC20(want).approve(redeem, _want.mul(redeemFee()));
-            IRedeemPool(redeem).rechargeCash(1, _want.mul(redeemFee()));
+            IERC20(want).approve(redeem, _want.mul(redeemFee()).div(1e18));
+            IRedeemPool(redeem).rechargeCash(1, _want.mul(redeemFee()).div(1e18));
 
             deposit();
         }
