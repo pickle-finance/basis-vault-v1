@@ -1,7 +1,6 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { DeployFunction } from 'hardhat-deploy/types';
-import { network, ethers } from 'hardhat';
-import { BigNumber, utils } from 'ethers';
+import { ethers, network } from 'hardhat'
 import config from '../config/config'
 
 
@@ -13,7 +12,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
     const netConf = config[await hre.getChainId()];
     let controllerV4 = await hre.ethers.getContract("ControllerV4", deployer);
-    console.log(controllerV4.address);
     let res = await deploy('StrategyBasisBac', {
         from: deployer,
         args: [
