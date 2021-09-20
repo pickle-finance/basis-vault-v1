@@ -28,7 +28,7 @@ interface IStrategy {
 
     function balanceOf() external view returns (uint256);
 
-    function harvest() external;
+    function harvest(uint256 amount, uint256 minOut) external;
 
     function setTimelock(address) external;
 

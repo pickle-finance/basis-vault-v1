@@ -53,7 +53,7 @@ contract StrategyBasisFarmTestBase is DSTestDefiBase {
         basisVault.deposit(_want);
         basisVault.earn();
         hevm.warp(block.timestamp + 1 weeks);
-        strategy.harvest();
+        strategy.harvest(uint256(-1), 0);
 
         // Checking withdraw
         uint256 _before = IERC20(want).balanceOf(address(basisVault));
@@ -82,7 +82,7 @@ contract StrategyBasisFarmTestBase is DSTestDefiBase {
         // Call the harvest function
         uint256 _before = basisVault.balance();
         uint256 _treasuryBefore = IERC20(want).balanceOf(treasury);
-        strategy.harvest();
+        strategy.harvest(uint256(-1), 0);
         uint256 _after = basisVault.balance();
         uint256 _treasuryAfter = IERC20(want).balanceOf(treasury);
 

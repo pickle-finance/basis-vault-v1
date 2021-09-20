@@ -238,7 +238,7 @@ abstract contract StrategyBase {
 
     function _withdrawSome(uint256 _amount) internal virtual returns (uint256);
 
-    function harvest() public virtual;
+    function harvest(uint256 amount, uint256 minOut) public virtual;
 
     // **** Emergency functions ****
 
@@ -310,13 +310,14 @@ abstract contract StrategyBase {
 
     function _swapUniswapWithPath(
         address[] memory path,
-        uint256 _amount
+        uint256 _amount,
+        uint256 _minOut
     ) internal {
         require(path[1] != address(0));
 
         UniswapRouterV2(univ2Router2).swapExactTokensForTokens(
             _amount,
-            0,
+            _minOut,
             path,
             address(this),
             now.add(60)

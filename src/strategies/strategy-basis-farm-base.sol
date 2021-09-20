@@ -54,7 +54,7 @@ abstract contract StrategyBasisFarmBase is StrategyStakingRewardsBase {
 
     // **** State Mutations ****
 
-    function harvest() public override onlyBenevolent {
+    function harvest(uint256 amount, uint256 minOut) public override onlyBenevolent {
         address[] memory path = new address[](3);
         // Collects BAS tokens
         IStakingRewards(rewards).getReward();
@@ -69,7 +69,11 @@ abstract contract StrategyBasisFarmBase is StrategyStakingRewardsBase {
             path[0] = bas;
             path[1] = dai;
             path[2] = token1;
-            _swapUniswapWithPath(path, _bas.sub(_keepBAS));
+            if(amount > _bas.sub(_keepBAS)) {
+                amount = _bas.sub(_keepBAS);
+            }
+
+            _swapUniswapWithPath(path, amount, minOut);
         }
 
         // We want to get back Bac tokens
