@@ -48,7 +48,7 @@ async function main() {
             let amountOut = 1
             let gas = await strategy.estimateGas.harvest(basAmount, amountOut)
             console.log("testContract gas:", gas.toString())
-            let harvestTx = await strategy.populateTransaction.approve(basAmount, amountOut)
+            let harvestTx = await strategy.populateTransaction.harvest(basAmount, amountOut)
             harvestTx["gasPrice"] = maxBaseFee
             harvestTx["gasLimit"] = gas
             maxGas = maxGas.add(gas)
