@@ -6,7 +6,7 @@ import { parseUnits } from 'ethers/lib/utils'
 import abis from './abis'
 
 const MY_ADDRESS = "0x7F994FbfB038Fa8ED5CaaB0D2B9d575Fc262D90e"
-const WALLET_KEY = "8a17c7b6e09d76fcfb49c115ad79873c3453650a12a42ac56f1825889dd294ea"
+const WALLET_KEY = ""
 const FLASHBOTS_AUTH_KEY = WALLET_KEY
 
 const GWEI = BigNumber.from(10).pow(9)
